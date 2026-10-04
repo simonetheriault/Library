@@ -10,8 +10,8 @@ export const Colors = {
   light: {
     text: '#993556',
     background: '#fbeaf0',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
+    backgroundElement: '#fbeaf0',
+    backgroundSelected: '#fbeaf0',
     textSecondary: '#60646C',
   },
 } as const;
