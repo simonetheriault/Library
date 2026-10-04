@@ -1,5 +1,6 @@
 import { TabListProps } from 'expo-router/build/TabBar/TabListProps';
 import { View, StyleSheet } from 'react-native';
+import { Search } from 'lucide-react-native';
 
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
@@ -14,6 +15,7 @@ export default function SearchBar(props: TabListProps) {
   return (
     <View {...props} style={styles.tabListContainer}>
       <ThemedView type="backgroundElement" style={styles.innerContainer}>
+        <Search style={styles.icon} />
         <ThemedText type="smallBold" style={styles.brandText}>
           Search for books...
         </ThemedText>
@@ -21,6 +23,7 @@ export default function SearchBar(props: TabListProps) {
     </View>
   );
 }
+
 
 
 const styles = StyleSheet.create({
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     paddingVertical: Spacing.two,
-    paddingHorizontal: Spacing.five,
+    paddingHorizontal: Spacing.three,
     textColor: Colors.light.text,
     backgroundColor: Colors.light.background,
     borderRadius: Spacing.five,
@@ -45,6 +48,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     gap: Spacing.two,
     maxWidth: MaxContentWidth,
+  },
+  icon: {
+    size: 22,
+    color: Colors.light.text,
+    strokeWidth: 1.5,
+    alignItems: 'center',
   },
   brandText: {
     color: Colors.light.text,

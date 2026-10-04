@@ -9,13 +9,17 @@ import { ThemedView } from './themed-view';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 
 
-// Need to add number of books and image
+// Add image
 export default function CustomHeader(props: TabListProps) {
   return (
     <View {...props} style={styles.tabListContainer}>
       <ThemedView type="backgroundElement" style={styles.innerContainer}>
         <ThemedText type="smallBold" style={styles.brandText}>
           Simone's Library
+        </ThemedText>
+        {/* Move under and add functionality */}
+        <ThemedText type="small" color={Colors.light.text}>
+          # books
         </ThemedText>
       </ThemedView>
     </View>
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     paddingVertical: Spacing.two,
-    paddingHorizontal: Spacing.five,
+    paddingHorizontal: Spacing.three,
     textColor: Colors.light.text,
     backgroundColor: Colors.light.background,
     borderRadius: Spacing.five,

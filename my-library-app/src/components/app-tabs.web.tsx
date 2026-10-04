@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.one,
     paddingHorizontal: Spacing.three,
     borderRadius: Spacing.three,
-    },
+  },
   brandText: {
     color: Colors.light.text,
     marginRight: 'auto',
