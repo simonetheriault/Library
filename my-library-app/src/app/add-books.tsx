@@ -1,13 +1,11 @@
 import { View, Platform, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import SearchBar from '@/components/search-bar';
-
 import { ThemedView } from '@/components/themed-view';
 import { Colors, BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
 
-export default function SearchScreen() {
+export default function AddBooksScreen() {
   const safeAreaInsets = useSafeAreaInsets();
   const insets = {
     ...safeAreaInsets,
@@ -29,7 +27,6 @@ export default function SearchScreen() {
 
   return (
     <View style={styles.page}>
-      <SearchBar />
       <View style={styles.frame}>
         <ScrollView
           style={[styles.scrollView, { backgroundColor: Colors.light.background }]}
@@ -37,8 +34,8 @@ export default function SearchScreen() {
           contentContainerStyle={[styles.contentContainer, contentPlatformStyle]}>
           <ThemedView style={styles.container}>
             <ThemedView style={styles.sectionsWrapper}>
-              {/* Search Section */}
-              <p>Search Page</p>
+              {/* Add Books Section */}
+              <p>Add Books Page</p>
             </ThemedView>
           </ThemedView>
         </ScrollView>
