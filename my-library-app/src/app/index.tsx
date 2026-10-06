@@ -1,24 +1,26 @@
-import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, ScrollView, StyleSheet } from 'react-native';
 
 import CustomHeader from '@/components/app-header';
+import Shelf from '@/components/shelf';
 
-import { ThemedView } from '@/components/themed-view';
-import { Colors, BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+
+const SHELVES = ['all books', 'currently reading', 'dark romance', 'fantasy', 'gothic romance'];
 
 export default function HomeScreen() {
   return (
     <View style={styles.page}>
       <CustomHeader />
       <View style={styles.frame}>
-        <ThemedView style={styles.container}>
-          <SafeAreaView style={styles.safeArea}>
-            {/* Home Page Section */}
-          </SafeAreaView>
-        </ThemedView>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.content}>
+          {SHELVES.map((name) => (
+            <Shelf key={name} title={name} />
+          ))}
+        </ScrollView>
       </View>
     </View>
-    
   );
 }
 
@@ -39,17 +41,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     overflow: 'hidden',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+  content: {
+    flexGrow: 1,
     alignItems: 'center',
     gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    padding: Spacing.four,
   },
 });
