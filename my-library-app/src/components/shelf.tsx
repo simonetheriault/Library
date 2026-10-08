@@ -1,11 +1,12 @@
-import { View, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { Image as Cover, View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useRef, type ReactNode } from 'react';
 
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { ThemedText } from './themed-text';
+import { Book, ShelfProp } from '@/constants/backend-objects';
 
-export default function Shelf({ title, children }: { title: string; children?: ReactNode }) {
+export default function Shelf({ title, books = [], children }: ShelfProp) {
   const row = useRef<ScrollView>(null);
   const x = useRef(0);
   const scrollBy = (dw: number) => {
@@ -24,6 +25,9 @@ export default function Shelf({ title, children }: { title: string; children?: R
         scrollEventThrottle={16}
         style={styles.row}
         contentContainerStyle={{ gap: Spacing.two }}>
+        {books.map((book) => (
+          <Cover key={book.id} source={{ uri: book.coverUrl }} style={styles.cover} />
+        ))}
         {children}
       </ScrollView>
       <View style={styles.plank} />
@@ -40,21 +44,26 @@ export default function Shelf({ title, children }: { title: string; children?: R
 }
 
 const styles = StyleSheet.create({
-    shelf: {
-        width: '100%',
-        gap: Spacing.one,
+  shelf: {
+    width: '100%',
+    gap: Spacing.one,
+  },
+  row:{
+    height: 105
+  },
+  cover: {
+    width: 68,
+    height: 102,
+    borderRadius: 4
+  },
+  plank: {
+    height: 4,
+    width: '100%',
+    borderRadius: 2,
+    backgroundColor: Colors.light.text,
     },
-    row:{
-        height: 105
-    },
-    plank: {
-        height: 4,
-        width: '100%',
-        borderRadius: 2,
-        backgroundColor: Colors.light.text,
-        },
-    arrows: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
+  arrows: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });
