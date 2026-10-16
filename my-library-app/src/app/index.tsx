@@ -8,7 +8,7 @@ import { fetchBooks } from '@/backend/main';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { Book } from '@/constants/backend-objects';
 
-const SHELVES = ['all books', 'currently reading', 'all time favorites', '6-star reads', 'dark romance', 'fantasy', 'gothic romance', 'manga/manhwa', 'romance'];
+const SHELVES = ['all books', 'currently reading', 'TBR', 'all time favorites', '6-star reads', 'dark romance', 'fantasy', 'gothic romance', 'manga/manhwa', 'romance'];
 
 export default function HomeScreen() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -18,6 +18,8 @@ export default function HomeScreen() {
 
   const booksFor = (shelf: string) =>
       shelf === "all books" ? books : books.filter((b) => b.shelves?.includes(shelf));
+
+
   return (
     <View style={styles.page}>
       <CustomHeader />

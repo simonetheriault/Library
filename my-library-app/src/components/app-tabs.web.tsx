@@ -6,7 +6,7 @@ import {
   TabTriggerSlotProps,
   TabListProps,
 } from 'expo-router/ui';
-import { Library, Search, Plus, ChartColumn, type LucideIcon  } from 'lucide-react-native';
+import { Library, ShelvingUnit , Search, Plus, ChartColumn, type LucideIcon  } from 'lucide-react-native';
 import { Pressable, View, StyleSheet } from 'react-native';
 
 import { ThemedText } from './themed-text';
@@ -22,6 +22,9 @@ export default function AppTabs() {
         <CustomTabList>
           <TabTrigger name="home" href="/" asChild>
             <TabButton icon={Library}>Library</TabButton>
+          </TabTrigger>
+          <TabTrigger name="my-shelves" href="/my-shelves" asChild>
+            <TabButton icon={ShelvingUnit}>My Shelves</TabButton>
           </TabTrigger>
           <TabTrigger name="search" href="/explore" asChild>
             <TabButton icon={Search}>Search</TabButton>
@@ -41,12 +44,12 @@ export default function AppTabs() {
 export function TabButton({ children, isFocused, icon: Icon, ...props }: TabTriggerSlotProps & { icon: LucideIcon }) {
   const color = isFocused ? Colors.light.text : Colors.light.textSecondary;
   return (
-    <Pressable {...props} style={({ pressed }) => pressed && styles.pressed}>
+    <Pressable {...props} style={({ pressed }) => [styles.tab, pressed && styles.pressed]}>
       <ThemedView
         type={isFocused ? 'backgroundSelected' : 'backgroundElement'}
         style={styles.tabButtonView}>
         <Icon size={22} color={color} strokeWidth={1.5} />
-        <ThemedText type="small" style={{ color }}>
+        <ThemedText type="small" style={{ color, textAlign: 'center' }}>
           {children}
         </ThemedText>
       </ThemedView>
@@ -65,6 +68,9 @@ export function CustomTabList(props: TabListProps) {
 }
 
 const styles = StyleSheet.create({
+  tab: {
+    flex: 1,
+  },
   tabListContainer: {
     backgroundColor: Colors.light.background,
     width: '100%',
@@ -74,17 +80,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   innerContainer: {
-    paddingVertical: Spacing.two,
-    paddingHorizontal: Spacing.five,
-    textColor: Colors.light.text,
     backgroundColor: Colors.light.background,
     borderRadius: Spacing.five,
     borderColor: Colors.light.text,
     borderWidth: 1,
+    width: '100%',
+    paddingVertical: Spacing.two,
+    paddingHorizontal: Spacing.one,
+    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    flexGrow: 1,
-    justifyContent: 'space-evenly',
     maxWidth: MaxContentWidth,
   },
   tabButtonView: {
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     paddingVertical: Spacing.one,
-    paddingHorizontal: Spacing.three,
+    paddingHorizontal: 0,
     borderRadius: Spacing.three,
   },
   brandText: {
