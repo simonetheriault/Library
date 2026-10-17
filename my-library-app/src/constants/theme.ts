@@ -18,6 +18,16 @@ export const Colors = {
 
 export type ThemeColor = keyof typeof Colors.light;
 
+export const Palette = {
+  bg: '#FCEFF3',          // page background
+  surface: '#FFFFFF',     // tab bar, cards
+  primary: '#8C2F4B',     // titles, active tab, links
+  primarySoft: '#F5D7E0', // active tab pill, empty-state fill
+  text: '#3B1A24',        // body text
+  textMuted: '#9C6B79',   // counts, captions, inactive tabs
+  hairline: 'rgba(140, 47, 75, 0.12)',
+} as const;
+
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */

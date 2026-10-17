@@ -16,9 +16,11 @@ export type Book = {
   review?: string;
 };
 
-
 export type ShelfProp = { 
-  title: string;
+  id?: string;
+  name: string;
+  createdAt?: Timestamp;
   books?: Book[];
+  emptyText?: string;
   children?: ReactNode
 };

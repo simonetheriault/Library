@@ -10,9 +10,8 @@ import { Library, ShelvingUnit , Search, Plus, ChartColumn, type LucideIcon  } f
 import { Pressable, View, StyleSheet } from 'react-native';
 
 import { ThemedText } from './themed-text';
-import { ThemedView } from './themed-view';
 
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+import { MaxContentWidth, Palette } from '@/constants/theme';
 
 export default function AppTabs() {
   return (
@@ -23,8 +22,8 @@ export default function AppTabs() {
           <TabTrigger name="home" href="/" asChild>
             <TabButton icon={Library}>Library</TabButton>
           </TabTrigger>
-          <TabTrigger name="my-shelves" href="/my-shelves" asChild>
-            <TabButton icon={ShelvingUnit}>My Shelves</TabButton>
+          <TabTrigger name="my-shelves" href="/physical-shelves" asChild>
+            <TabButton icon={ShelvingUnit}>Shelves</TabButton>
           </TabTrigger>
           <TabTrigger name="search" href="/explore" asChild>
             <TabButton icon={Search}>Search</TabButton>
@@ -42,17 +41,15 @@ export default function AppTabs() {
 }
 
 export function TabButton({ children, isFocused, icon: Icon, ...props }: TabTriggerSlotProps & { icon: LucideIcon }) {
-  const color = isFocused ? Colors.light.text : Colors.light.textSecondary;
+  const color = isFocused ? Palette.primary : Palette.textMuted;
   return (
     <Pressable {...props} style={({ pressed }) => [styles.tab, pressed && styles.pressed]}>
-      <ThemedView
-        type={isFocused ? 'backgroundSelected' : 'backgroundElement'}
-        style={styles.tabButtonView}>
-        <Icon size={22} color={color} strokeWidth={1.5} />
-        <ThemedText type="small" style={{ color, textAlign: 'center' }}>
+      <View style={[styles.tabButtonView, isFocused && styles.tabButtonActive]}>
+        <Icon size={22} color={color} strokeWidth={isFocused ? 2 : 1.5} />
+        <ThemedText numberOfLines={1} style={[styles.label, { color }]}>
           {children}
         </ThemedText>
-      </ThemedView>
+      </View>
     </Pressable>
   );
 }
@@ -60,9 +57,9 @@ export function TabButton({ children, isFocused, icon: Icon, ...props }: TabTrig
 export function CustomTabList(props: TabListProps) {
   return (
     <View {...props} style={styles.tabListContainer}>
-      <ThemedView type="backgroundElement" style={styles.innerContainer}>
+      <View style={styles.innerContainer}>
         {props.children}
-      </ThemedView>
+      </View>
     </View>
   );
 }
@@ -72,46 +69,40 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabListContainer: {
-    backgroundColor: Colors.light.background,
+    backgroundColor: Palette.surface,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: Palette.hairline,
     width: '100%',
-    padding: Spacing.three,
-    justifyContent: 'center',
+    paddingTop: 6,
+    paddingBottom: 8,
+    paddingHorizontal: 8,
     alignItems: 'center',
-    flexDirection: 'row',
   },
   innerContainer: {
-    backgroundColor: Colors.light.background,
-    borderRadius: Spacing.five,
-    borderColor: Colors.light.text,
-    borderWidth: 1,
     width: '100%',
-    paddingVertical: Spacing.two,
-    paddingHorizontal: Spacing.one,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
     maxWidth: MaxContentWidth,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   tabButtonView: {
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,
-    paddingVertical: Spacing.one,
-    paddingHorizontal: 0,
-    borderRadius: Spacing.three,
+    paddingVertical: 4,
+    marginHorizontal: 4,
+    borderRadius: 12,
   },
-  brandText: {
-    color: Colors.light.text,
-    marginRight: 'auto',
+  tabButtonActive: {
+    backgroundColor: Palette.primarySoft,
+  },
+  label: {
+    fontSize: 11,
+    lineHeight: 14,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   pressed: {
-    textColor: Colors.light.text,
-  },
-  externalPressable: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: Spacing.one,
-    marginLeft: Spacing.three,
+    opacity: 0.7,
   },
 });

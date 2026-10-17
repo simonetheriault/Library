@@ -1,62 +1,62 @@
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
+import { useFocusEffect } from 'expo-router';
 
 import CustomHeader from '@/components/app-header';
-import Shelf from '@/components/shelf';
-import { fetchBooks } from '@/backend/main';
+import Shelf, {DEFAULT_SHELVES} from '@/components/shelf';
+import { fetchBooks, fetchShelves } from '@/backend/main';
 
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
-import { Book } from '@/constants/backend-objects';
+import { MaxContentWidth, Palette } from '@/constants/theme';
+import { Book, ShelfProp } from '@/constants/backend-objects';
 
-const SHELVES = ['all books', 'currently reading', 'TBR', 'all time favorites', '6-star reads', 'dark romance', 'fantasy', 'gothic romance', 'manga/manhwa', 'romance'];
+
+// Shelf names double as filter keys, so only capitalize for display
+const label = (shelf: string) => shelf.charAt(0).toUpperCase() + shelf.slice(1);
 
 export default function HomeScreen() {
   const [books, setBooks] = useState<Book[]>([]);
-  useEffect(() => {
-    fetchBooks().then(setBooks).catch((e) => console.error("fetchBooks failed", e));
-  }, []);
+  const [shelves, setShelves] = useState<ShelfProp[]>([]);
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchBooks().then(setBooks).catch((e) => console.error("fetchBooks failed", e));
+      fetchShelves().then(setShelves).catch((e) => console.error("fetchShelves failed", e));
+    }, [])
+  );
+
+  const allShelves = [...DEFAULT_SHELVES, ...shelves.map((s) => s.name)]
   const booksFor = (shelf: string) =>
       shelf === "all books" ? books : books.filter((b) => b.shelves?.includes(shelf));
 
 
   return (
-    <View style={styles.page}>
-      <CustomHeader />
-      <View style={styles.frame}>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={styles.content}>
-          {SHELVES.map((name) => (
-            <Shelf key={name} title={name} books={booksFor(name)} />
-          ))}
-        </ScrollView>
-      </View>
+    <View style={styles.screen}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.content}>
+        <CustomHeader subtitle={`${books.length} books`} />
+        {allShelves.map((name) => (
+          <Shelf
+            key={name}
+            name={label(name)}
+            books={booksFor(name)}
+            emptyText={`Nothing here yet. Add a book to ${label(name)}.`}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  page: {
+  screen: {
     flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: Spacing.three,
-    backgroundColor: Colors.light.background,
-  },
-  frame: {
-    flex: 1,
-    width: '100%',
-    maxWidth: MaxContentWidth,
-    marginHorizontal: Spacing.three,
-    borderRadius: Spacing.five,
-    borderColor: Colors.light.text,
-    borderWidth: 1,
-    overflow: 'hidden',
+    backgroundColor: Palette.bg,
   },
   content: {
-    flexGrow: 1,
-    alignItems: 'center',
-    gap: Spacing.three,
-    padding: Spacing.four,
+    width: '100%',
+    maxWidth: MaxContentWidth,
+    alignSelf: 'center',
+    paddingBottom: 32,
   },
 });

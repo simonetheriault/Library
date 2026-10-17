@@ -1,80 +1,102 @@
-import { View, Platform, ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { useState } from 'react';
 
-import { ThemedView } from '@/components/themed-view';
-import { Colors, BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import CustomHeader from '@/components/app-header';
+import { ThemedText } from '@/components/themed-text';
+import { MaxContentWidth, Palette } from '@/constants/theme';
 
+const OPTIONS = [
+  { key: 'book', label: 'Book' },
+  { key: 'shelf', label: 'Shelf' },
+  { key: 'physical', label: 'Physical' },
+  { key: 'import', label: 'Import' },
+] as const;
+
+type AddKind = (typeof OPTIONS)[number]['key'];
 
 export default function AddBooksScreen() {
-  const safeAreaInsets = useSafeAreaInsets();
-  const insets = {
-    ...safeAreaInsets,
-    bottom: safeAreaInsets.bottom + BottomTabInset + Spacing.three,
-  };
-
-  const contentPlatformStyle = Platform.select({
-    android: {
-      paddingTop: insets.top,
-      paddingLeft: insets.left,
-      paddingRight: insets.right,
-      paddingBottom: insets.bottom,
-    },
-    web: {
-      paddingTop: Spacing.six,
-      paddingBottom: Spacing.four,
-    },
-  });
+  const [kind, setKind] = useState<AddKind>('book');
 
   return (
-    <View style={styles.page}>
-      <View style={styles.frame}>
-        <ScrollView
-          style={[styles.scrollView, { backgroundColor: Colors.light.background }]}
-          contentInset={insets}
-          contentContainerStyle={[styles.contentContainer, contentPlatformStyle]}>
-          <ThemedView style={styles.container}>
-            <ThemedView style={styles.sectionsWrapper}>
-              {/* Add Books Section */}
-              <p>Add Books Page</p>
-            </ThemedView>
-          </ThemedView>
-        </ScrollView>
-      </View>
+    <View style={styles.screen}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content}>
+        <CustomHeader subtitle="What would you like to add?" />
+
+        <View style={styles.segment}>
+          {OPTIONS.map((o) => {
+            const active = kind === o.key;
+            return (
+              <Pressable
+                key={o.key}
+                onPress={() => setKind(o.key)}
+                style={[styles.segmentItem, active && styles.segmentActive]}>
+                <ThemedText
+                  numberOfLines={1}
+                  style={[styles.segmentText, active && styles.segmentTextActive]}>
+                  {o.label}
+                </ThemedText>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <View style={styles.form}>
+          {kind === 'book' && <ThemedText style={styles.placeholder}>Book form goes here</ThemedText>}
+          {kind === 'shelf' && <ThemedText style={styles.placeholder}>Shelf form goes here</ThemedText>}
+          {kind === 'physical' && <ThemedText style={styles.placeholder}>Physical shelf form goes here</ThemedText>}
+          {kind === 'import' && <ThemedText style={styles.placeholder}>Import goes here</ThemedText>}
+        </View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  page: {
+  screen: {
     flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: Spacing.three,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Palette.bg,
   },
-  frame: {
-    flex: 1,
+  content: {
     width: '100%',
     maxWidth: MaxContentWidth,
-    marginHorizontal: Spacing.three,
-    borderRadius: Spacing.five,
-    borderColor: Colors.light.text,
-    borderWidth: 1,
-    overflow: 'hidden',
+    alignSelf: 'center',
+    paddingBottom: 32,
   },
-  scrollView: {
-    flex: 1,
-  },
-  contentContainer: {
+  segment: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 16,
+    padding: 4,
+    borderRadius: 12,
+    backgroundColor: Palette.primarySoft,
   },
-  container: {
-    maxWidth: MaxContentWidth,
-    flexGrow: 1,
+  segmentItem: {
+    flex: 1,
+    paddingVertical: 8,
+    borderRadius: 8,
+    alignItems: 'center',
   },
-  sectionsWrapper: {
-    gap: Spacing.five,
-    paddingHorizontal: Spacing.four,
-    paddingTop: Spacing.three,
+  segmentActive: {
+    backgroundColor: Palette.surface,
+    boxShadow: '0 1px 3px rgba(59, 26, 36, 0.12)',
+  },
+  segmentText: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
+    color: Palette.textMuted,
+  },
+  segmentTextActive: {
+    fontWeight: '700',
+    color: Palette.primary,
+  },
+  form: {
+    paddingHorizontal: 20,
+    marginTop: 24,
+    gap: 16,
+  },
+  placeholder: {
+    fontSize: 14,
+    color: Palette.textMuted,
   },
 });

@@ -1,61 +1,43 @@
-import {
-  TabListProps,
-} from 'expo-router/ui';
 import { View, StyleSheet } from 'react-native';
 
 import { ThemedText } from './themed-text';
-import { ThemedView } from './themed-view';
 
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+import { MaxContentWidth, Palette } from '@/constants/theme';
 
+type HeaderProps = {
+  subtitle?: string;
+};
 
 // Add image
-export default function CustomHeader(props: TabListProps) {
+export default function CustomHeader({ subtitle }: HeaderProps) {
   return (
-    <View {...props} style={styles.tabListContainer}>
-      <ThemedView type="backgroundElement" style={styles.innerContainer}>
-        <ThemedText type="smallBold" style={styles.brandText}>
-          Simone's Library
-        </ThemedText>
-        {/* Move under and add functionality */}
-        <ThemedText type="small" color={Colors.light.text}>
-          # books
-        </ThemedText>
-      </ThemedView>
+    <View style={styles.header}>
+      <ThemedText style={styles.title}>Simone's Library</ThemedText>
+      {subtitle && <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>}
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
-  tabListContainer: {
-    backgroundColor: Colors.light.background,
+  header: {
     width: '100%',
-    padding: Spacing.three,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  innerContainer: {
-    paddingVertical: Spacing.two,
-    paddingHorizontal: Spacing.three,
-    textColor: Colors.light.text,
-    backgroundColor: Colors.light.background,
-    borderRadius: Spacing.five,
-    borderColor: Colors.light.text,
-    borderWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexGrow: 1,
-    gap: Spacing.two,
     maxWidth: MaxContentWidth,
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 8,
   },
-  brandText: {
-    color: Colors.light.text,
-    marginRight: 'auto',
+  title: {
+    fontSize: 30,
+    lineHeight: 36,
+    fontWeight: '800',
+    letterSpacing: -0.5,
+    color: Palette.primary,
   },
-  pressed: {
-    opacity: 0.7,
+  subtitle: {
+    marginTop: 2,
+    fontSize: 14,
+    fontWeight: '500',
+    color: Palette.textMuted,
   },
-
 });
