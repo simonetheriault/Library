@@ -1,6 +1,7 @@
 import { Image as Cover, View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useRef, type ReactNode } from 'react';
+import { Link as Nav } from 'expo-router';
 
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { ThemedText } from './themed-text';
@@ -26,7 +27,11 @@ export default function Shelf({ title, books = [], children }: ShelfProp) {
         style={styles.row}
         contentContainerStyle={{ gap: Spacing.two }}>
         {books.map((book) => (
-          <Cover key={book.id} source={{ uri: book.coverUrl }} style={styles.cover} />
+          <Nav key={book.id} href={`/book/${book.id}`} asChild>
+            <Pressable>
+              <Cover source={{ uri: book.coverUrl }} style={styles.cover} />
+            </Pressable>
+          </Nav>
         ))}
         {children}
       </ScrollView>

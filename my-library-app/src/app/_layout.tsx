@@ -1,11 +1,12 @@
-import { DefaultTheme, ThemeProvider } from 'expo-router';
+import { DefaultTheme, ThemeProvider, Stack } from 'expo-router';
 
-import AppTabs from '@/components/app-tabs';
-
-export default function TabLayout() {
+export default function RootLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>
-      <AppTabs />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="book/[id]" options={{ title: 'Book' }} />
+      </Stack>
     </ThemeProvider>
   );
 }
