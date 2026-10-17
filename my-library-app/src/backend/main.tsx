@@ -3,7 +3,8 @@ import { db } from "./firebase";
 import { Book, ShelfProp } from "@/constants/backend-objects";
 
 export async function fetchBooks(userId = "simone"): Promise<Book[]> {
-  const snap = await getDocs(collection(db, "user", userId, "books"));
+  const q = query(collection(db, "user", userId, "books"), orderBy("author"));
+  const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Book);
 }
 
