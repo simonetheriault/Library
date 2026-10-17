@@ -5,6 +5,7 @@ export type Book = {
   id: string;
   title: string;
   author: string;
+  //series?: string;
   coverUrl?: string;
   status?: "TBR" | "reading" | "finished";
   timesRead?: number;
